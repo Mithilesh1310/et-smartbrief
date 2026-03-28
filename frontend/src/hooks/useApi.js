@@ -1,6 +1,5 @@
 /**
  * ET SmartBrief — hooks/useApi.js
- * Centralized API calls to the Express backend
  */
 
 // Use env in production, fallback to "" for local Vite proxy
