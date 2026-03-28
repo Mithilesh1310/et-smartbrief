@@ -1,0 +1,62 @@
+.wrapper { display: flex; flex-direction: column; gap: 20px; }
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.5s ease forwards;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.label {
+  font-size: 11px; font-family: var(--font-mono);
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.blue  { color: var(--blue); }
+.purple{ color: #a78bfa; }
+.orange{ color: #ff9f1c; }
+
+.card:has(.blue)::before   { content:''; position:absolute; top:0; left:0; right:0; height:3px; background: linear-gradient(90deg, var(--blue), #a78bfa); }
+.card:has(.purple)::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background: linear-gradient(90deg, #a78bfa, var(--blue)); }
+.card:has(.orange)::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background: linear-gradient(90deg, #ff9f1c, var(--gold2)); }
+
+.list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg3); border-radius: var(--r2);
+  border-left: 3px solid var(--blue);
+}
+.num { font-family: var(--font-mono); font-size: 12px; color: var(--blue); min-width: 20px; margin-top: 1px; }
+.text { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+.details { color: var(--text2); line-height: 1.8; font-size: 15px; font-weight: 300; }
+
+.impact {
+  background: linear-gradient(135deg, rgba(240,180,41,0.06), rgba(76,201,240,0.06));
+  border: 1px solid rgba(240,180,41,0.15);
+  border-radius: var(--r); padding: 20px; margin-top: 20px;
+}
+.impactLabel { font-size: 11px; font-family: var(--font-mono); color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+.impactText { font-size: 14px; color: var(--text2); line-height: 1.7; }
+
+.signalFootnote {
+  margin-top: 16px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text3);
+}
+
+.eli12 {
+  background: linear-gradient(135deg, rgba(255,159,28,0.08), rgba(240,180,41,0.05));
+  border: 1px solid rgba(255,159,28,0.2);
+  border-radius: var(--r); padding: 20px;
+  font-size: 16px; color: var(--text); line-height: 1.75;
+}

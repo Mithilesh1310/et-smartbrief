@@ -1,0 +1,64 @@
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.inputRow { display: flex; gap: 12px; margin-bottom: 20px; }
+.input {
+  flex: 1;
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: var(--r); padding: 14px 18px;
+  font-family: var(--font-body); font-size: 16px; color: var(--text);
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(240,180,41,0.1); }
+.input::placeholder { color: var(--text3); }
+.input:disabled { opacity: 0.6; }
+.generateBtn {
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #0a0a0f; border: none; border-radius: var(--r);
+  padding: 14px 24px; font-family: var(--font-body);
+  font-size: 15px; font-weight: 600; cursor: pointer;
+  white-space: nowrap; transition: transform 0.15s, box-shadow 0.15s;
+}
+.generateBtn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(240,180,41,0.3); }
+.generateBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.modeSection { margin-bottom: 16px; }
+.modeLabel { font-size: 11px; color: var(--text3); font-family: var(--font-mono); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+.modeRow { display: flex; gap: 8px; flex-wrap: wrap; }
+.modeBtn {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); padding: 7px 16px; border-radius: 20px;
+  font-size: 13px; cursor: pointer; transition: all 0.15s;
+  font-family: var(--font-body);
+}
+.modeBtn:hover, .modeBtn.active {
+  background: rgba(240,180,41,0.1); border-color: var(--gold); color: var(--gold);
+}
+.modeIcon { font-size: 14px; }
+.samples { margin-top: 16px; }
+.sampleLabel { font-size: 11px; color: var(--text3); font-family: var(--font-mono); margin-bottom: 8px; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); padding: 5px 12px; border-radius: 20px;
+  font-size: 12px; cursor: pointer; transition: all 0.15s;
+}
+.chip:hover { border-color: var(--blue); color: var(--blue); background: rgba(76,201,240,0.06); }
+
+@media(max-width: 600px) {
+  .card { padding: 20px; }
+  .inputRow { flex-direction: column; }
+  .generateBtn { width: 100%; text-align: center; }
+}

@@ -1,0 +1,96 @@
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.5s ease forwards;
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.label {
+  font-size: 11px; font-family: var(--font-mono);
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--green); margin-bottom: 20px;
+}
+
+.sectorGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.sectorCard {
+  background: var(--bg3);
+  border-radius: var(--r);
+  padding: 18px;
+  border: 1px solid var(--border);
+}
+
+.winners { border-left: 3px solid var(--green); }
+.losers { border-left: 3px solid var(--red); }
+
+.sectorLabel {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.sectorList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectorItem {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .sectorGrid { grid-template-columns: 1fr; } }
+
+.box {
+  background: var(--bg3);
+  border-radius: var(--r);
+  padding: 18px;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+}
+.box:hover { border-color: var(--border2); }
+
+.boxLabel {
+  font-size: 11px; font-family: var(--font-mono);
+  letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.bull .boxLabel  { color: var(--green); }
+.bear .boxLabel  { color: var(--red); }
+.outlook .boxLabel { color: var(--blue); }
+.risk .boxLabel  { color: #ffa552; }
+
+.bull  { border-left: 3px solid var(--green) !important; }
+.bear  { border-left: 3px solid var(--red) !important; }
+.outlook { border-left: 3px solid var(--blue) !important; }
+.risk  { border-left: 3px solid #ffa552 !important; }
+
+.boxText { font-size: 13px; color: var(--text2); line-height: 1.7; }
