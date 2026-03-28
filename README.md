@@ -148,6 +148,8 @@ Edit `.env` and add your key:
 ```
 PORT=5000
 GEMINI_API_KEY=AIza...your-key-here...
+GEMINI_MODEL=gemini-2.0-flash
+GEMINI_FALLBACK_MODELS=gemini-2.0-flash-lite,gemini-1.5-flash
 NODE_ENV=development
 ```
 
@@ -220,6 +222,8 @@ http://localhost:5173
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `GEMINI_API_KEY` | ✅ | Your Google Gemini API key |
+| `GEMINI_MODEL` | Optional | Primary Gemini model to try first |
+| `GEMINI_FALLBACK_MODELS` | Optional | Comma-separated fallback models if the primary one is blocked/unavailable |
 | `PORT` | Optional | Backend port (default: 5000) |
 | `NODE_ENV` | Optional | `development` or `production` |
 

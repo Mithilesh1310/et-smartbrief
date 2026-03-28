@@ -4,8 +4,24 @@
  */
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const modelName = process.env.GEMINI_MODEL || "gemini-2.0-flash";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+function getCandidateModels() {
+  const configuredModels = [
+    process.env.GEMINI_MODEL,
+    ...(process.env.GEMINI_FALLBACK_MODELS || "").split(","),
+  ]
+    .map((model) => model && model.trim())
+    .filter(Boolean);
+
+  const defaultModels = [
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
+    "gemini-1.5-flash",
+  ];
+
+  return [...new Set([...configuredModels, ...defaultModels])];
+}
 
 function extractFirstJsonObject(text) {
   const start = text.indexOf("{");
@@ -48,7 +64,7 @@ function extractFirstJsonObject(text) {
   return null;
 }
 
-function normalizeGeminiError(error) {
+function normalizeGeminiError(error, modelName) {
   const message = error?.message || "Unknown Gemini API error";
 
   if (message.includes("429") || /quota exceeded/i.test(message) || /Too Many Requests/i.test(message)) {
@@ -66,13 +82,13 @@ function normalizeGeminiError(error) {
   }
 
   if (message.includes("404") && message.includes("not found")) {
-    return new Error(`Gemini model "${modelName}" is unavailable for this API key. Set GEMINI_MODEL in backend/.env to a supported model.`);
+    return new Error(`Gemini model "${modelName}" is unavailable for this API key. Set GEMINI_MODEL to a supported model in your backend environment.`);
   }
 
   return error instanceof Error ? error : new Error(message);
 }
 
-function createModel(systemPrompt, maxTokens, useJsonMode = true) {
+function createModel(modelName, systemPrompt, maxTokens, useJsonMode = true) {
   return genAI.getGenerativeModel({
     model: modelName,
     systemInstruction: systemPrompt,
@@ -104,34 +120,35 @@ function parseGeminiJson(text) {
  */
 async function complete(systemPrompt, userContent, maxTokens = 900) {
   if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === "your_gemini_api_key_here") {
-    throw new Error("Missing GEMINI_API_KEY in backend/.env");
+    throw new Error("Missing GEMINI_API_KEY in the backend environment");
   }
 
-  const model = createModel(systemPrompt, maxTokens, false);
+  const candidateModels = getCandidateModels();
+  const errors = [];
 
-  let result;
-
-  try {
-    result = await model.generateContent(userContent);
-  } catch (error) {
-    throw normalizeGeminiError(error);
-  }
-
-  const text = result.response.text();
-
-  try {
-    return parseGeminiJson(text);
-  } catch {
+  for (const modelName of candidateModels) {
     try {
-      const fallbackModel = createModel(systemPrompt, maxTokens, false);
-      const fallbackResult = await fallbackModel.generateContent(
+      const model = createModel(modelName, systemPrompt, maxTokens, false);
+      const result = await model.generateContent(userContent);
+      const text = result.response.text();
+
+      try {
+        return parseGeminiJson(text);
+      } catch {
+        const fallbackModel = createModel(modelName, systemPrompt, maxTokens, false);
+        const fallbackResult = await fallbackModel.generateContent(
         `${userContent}\n\nReturn one valid JSON object only. No markdown. No extra commentary.`
-      );
-      return parseGeminiJson(fallbackResult.response.text());
-    } catch (fallbackError) {
-      throw normalizeGeminiError(fallbackError);
+        );
+        return parseGeminiJson(fallbackResult.response.text());
+      }
+    } catch (error) {
+      errors.push(normalizeGeminiError(error, modelName).message);
     }
   }
+
+  throw new Error(
+    `All configured Gemini models failed. Tried: ${candidateModels.join(", ")}. Last errors: ${errors.join(" | ")}`
+  );
 }
 
 module.exports = { complete };
