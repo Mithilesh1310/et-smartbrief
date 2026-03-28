@@ -1,12 +1,11 @@
 /**
  * ET SmartBrief — hooks/useApi.js
+ * Production-ready API calls
  */
 
-// Use env in production, fallback to "" for local Vite proxy
-const BASE = import.meta.env.VITE_API_URL || "";
+const BASE = import.meta.env.VITE_API_URL;
 
-
-// ── Generate Briefing ───────────────────────────────────────────────
+// ── Generate Brief ─────────────────────────────────────
 export async function generateBriefing(topic, mode) {
   const res = await fetch(`${BASE}/analyze`, {
     method: "POST",
@@ -24,8 +23,7 @@ export async function generateBriefing(topic, mode) {
   return res.json();
 }
 
-
-// ── Chat Message ────────────────────────────────────────────────────
+// ── Chat ───────────────────────────────────────────────
 export async function sendChatMessage(sessionId, question) {
   const res = await fetch(`${BASE}/chat`, {
     method: "POST",
